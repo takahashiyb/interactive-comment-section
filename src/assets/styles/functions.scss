@@ -1,0 +1,79 @@
+@use 'sass:math';
+@use 'sass:map';
+
+@function rem($pixel) {
+  @if math.is-unitless($pixel) {
+    @return math.div($pixel, 16) * 1rem;
+  } @else {
+    @error 'Don\'t use units when using the rem() function; only numbers.';
+  }
+}
+
+@function em($pixel) {
+  @if math.is-unitless($pixel) {
+    @return math.div($pixel, 16) * 1em;
+  } @else {
+    @error 'Don\'t use units when using the em() function; only numbers.';
+  }
+}
+
+@mixin flat-type($preset) {
+  font-size: map.get($preset, font-size);
+  font-weight: map.get($preset, font-weight);
+  line-height: map.get($preset, line-height);
+  letter-spacing: map.get($preset, letter-spacing);
+}
+
+@function fluid($min-size, $max-size, $min-vw, $max-vw) {
+  @return clamp(
+    #{$min-size},
+    calc(
+      #{$min-size} + (#{$max-size} - #{$min-size}) *
+        ((100vw - #{$min-vw}) / (#{$max-vw} - #{$min-vw}))
+    ),
+    #{$max-size}
+  );
+}
+
+@mixin responsive-type(
+  $mobile,
+  $tablet,
+  $desktop,
+  $min-vw: map.get($breakpoints, 'mobile'),
+  $mid-vw: map.get($breakpoints, 'tablet'),
+  $max-vw: map.get($breakpoints, 'desktop')
+) {
+  font-size: fluid(map.get($mobile, font-size), map.get($tablet, font-size), $min-vw, $mid-vw);
+
+  @media (min-width: $mid-vw) {
+    font-size: fluid(map.get($tablet, font-size), map.get($desktop, font-size), $mid-vw, $max-vw);
+  }
+
+  font-weight: map.get($mobile, font-weight);
+  line-height: map.get($mobile, line-height);
+  letter-spacing: map.get($mobile, letter-spacing);
+
+  @media (min-width: $mid-vw) {
+    font-weight: map.get($tablet, font-weight);
+    line-height: map.get($tablet, line-height);
+    letter-spacing: map.get($tablet, letter-spacing);
+  }
+
+  @media (min-width: $max-vw) {
+    font-weight: map.get($desktop, font-weight);
+    line-height: map.get($desktop, line-height);
+    letter-spacing: map.get($desktop, letter-spacing);
+  }
+}
+
+@mixin responsive-grid($space-lr, $space-gap, $col-count, $max-width: 20em) {
+  display: grid;
+  gap: $space-gap;
+
+  grid-template-columns:
+    1fr repeat(
+      $col-count,
+      calc((min(100% - ($space-lr * 2), $max-width) - ($col-count) * $space-gap) / $col-count)
+    )
+    1fr;
+}

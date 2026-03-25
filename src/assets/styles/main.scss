@@ -1,0 +1,316 @@
+@use './functions.scss' as f;
+
+// VARIABLES
+
+// / Colors:
+// // Neutrals:
+$white: #ffffff;
+$black: #000000;
+
+// // Blues:
+$blue-950: #14172e;
+$blue-900: #161932;
+$blue-850: #1e213f;
+$blue-100: #d7e0ff;
+$blue-050: #eff1fa;
+
+// /// Greys:
+$grey-400: #bbbdcb;
+$grey-200: #e4e2e2;
+
+// // Cyan:
+$cyan-300: #70f3f8;
+
+// // Red:
+$red-400: #f87070;
+
+// // Purple:
+$purple-400: #d881f8;
+
+// Gradient:
+$gradient-l: #2e325a;
+$gradient-d: #0e112a;
+
+// TYPOGRAPHY
+
+// / Font 1: Kumbh Sans:
+$font-1: 'Kumbh Sans';
+
+$font-1-text-1: (
+  font-size: f.rem(90),
+  font-weight: 700,
+  line-height: 1.25,
+  letter-spacing: em(-5),
+);
+
+$font-1-text-2: (
+  font-size: f.rem(16),
+  font-weight: 700,
+  line-height: 1.25,
+  letter-spacing: em(15),
+);
+
+$font-1-text-3: (
+  font-size: f.rem(14),
+  font-weight: 700,
+  line-height: 1.2,
+  letter-spacing: em(0),
+);
+
+$font-1-text-1m: (
+  font-size: f.rem(70),
+  font-weight: 700,
+  line-height: 1.25,
+  letter-spacing: em(-5),
+);
+
+$font-1-text-2m: (
+  font-size: f.rem(14),
+  font-weight: 700,
+  line-height: 1.2,
+  letter-spacing: em(13),
+);
+
+$font-1-text-3m: (
+  font-size: f.rem(12),
+  font-weight: 700,
+  line-height: 1.25,
+  letter-spacing: em(0),
+);
+
+// / Font 2: Roboto Slab:
+$font-2: 'Roboto Slab';
+
+$font-2-text-1: (
+  font-size: f.rem(90),
+  font-weight: 700,
+  line-height: 1.3,
+  letter-spacing: em(0),
+);
+
+$font-2-text-2: (
+  font-size: f.rem(16),
+  font-weight: 700,
+  line-height: 1.25,
+  letter-spacing: em(15),
+);
+
+$font-2-text-3: (
+  font-size: f.rem(14),
+  font-weight: 700,
+  line-height: 1.3,
+  letter-spacing: em(0),
+);
+
+$font-2-text-1m: (
+  font-size: f.rem(70),
+  font-weight: 700,
+  line-height: 1.33,
+  letter-spacing: em(0),
+);
+
+$font-2-text-2m: (
+  font-size: f.rem(14),
+  font-weight: 700,
+  line-height: 1.3,
+  letter-spacing: em(13),
+);
+
+$font-2-text-3m: (
+  font-size: f.rem(12),
+  font-weight: 700,
+  line-height: 1.33,
+  letter-spacing: em(0),
+);
+
+// / Font 3: Space Mono:
+$font-3: 'Space Mono';
+
+$font-3-text-1: (
+  font-size: f.rem(90),
+  font-weight: 400,
+  line-height: 1.5,
+  letter-spacing: em(-10),
+);
+
+$font-3-text-2: (
+  font-size: f.rem(16),
+  font-weight: 700,
+  line-height: 1.5,
+  letter-spacing: em(15),
+);
+
+$font-3-text-3: (
+  font-size: f.rem(13),
+  font-weight: 700,
+  line-height: 1.45,
+  letter-spacing: em(0),
+);
+
+$font-3-text-1m: (
+  font-size: f.rem(70),
+  font-weight: 400,
+  line-height: 1.2,
+  letter-spacing: em(-10),
+);
+
+$font-3-text-2m: (
+  font-size: f.rem(14),
+  font-weight: 700,
+  line-height: 1.5,
+  letter-spacing: em(13),
+);
+
+$font-3-text-3m: (
+  font-size: f.rem(12),
+  font-weight: 700,
+  line-height: 1.5,
+  letter-spacing: em(0),
+);
+
+// Settings fonts:
+$settings-text-1: (
+  font-size: f.rem(28),
+  font-weight: 700,
+  line-height: 1.25,
+  letter-spacing: em(0),
+);
+
+$settings-text-2-k: (
+  font-size: f.rem(13),
+  font-weight: 700,
+  line-height: 1.45,
+  letter-spacing: em(0),
+);
+
+$settings-text-2-r: (
+  font-size: f.rem(16),
+  font-weight: 400,
+  line-height: 1.25,
+  letter-spacing: em(0),
+);
+
+$settings-text-2-s: (
+  font-size: f.rem(16),
+  font-weight: 700,
+  line-height: 1.25,
+  letter-spacing: em(0),
+);
+
+$settings-text-3: (
+  font-size: f.rem(13),
+  font-weight: 700,
+  line-height: 1.25,
+  letter-spacing: em(5),
+);
+
+$settings-text-4: (
+  font-size: f.rem(12),
+  font-weight: 700,
+  line-height: 1.25,
+  letter-spacing: em(0),
+);
+
+// Spacing:
+
+$spacing-0000: f.em(0);
+$spacing-0100: f.em(8);
+$spacing-0200: f.em(16);
+$spacing-0300: f.em(24);
+$spacing-0400: f.em(32);
+$spacing-0500: f.em(40);
+$spacing-0600: f.em(48);
+$spacing-0700: f.em(56);
+$spacing-0800: f.em(64);
+$spacing-1000: f.em(80);
+
+// RESETS:
+
+/* 1. Use a more-intuitive box-sizing model */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 2. Remove default margin */
+*:not(dialog) {
+  margin: 0;
+}
+
+/* 3. Enable keyword animations */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    interpolate-size: allow-keywords;
+  }
+}
+
+body {
+  /* 4. Increase line-height */
+  line-height: 1.5;
+  /* 5. Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 6. Improve media defaults */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 7. Inherit fonts for form controls */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* 8. Avoid text overflows */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+/* 9. Improve line wrapping */
+p {
+  text-wrap: pretty;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+/*
+  10. Create a root stacking context
+*/
+#root,
+#__next {
+  isolation: isolate;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0); /* Fallback for older browsers */
+  clip-path: inset(50%); /* Modern alternative */
+  white-space: nowrap;
+  border: 0;
+}

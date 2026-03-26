@@ -83,11 +83,11 @@ function getCreateDate() {
   return getMinutes(currentDate) - getMinutes(createdDate)
 }
 
-function offUpdatePhase() {
+function updatePost() {
   dataStore.actionFocus = null
 }
 
-function offReplyPhase() {
+function replyPost() {
   dataStore.actionFocus = null
 }
 </script>
@@ -124,12 +124,12 @@ function offReplyPhase() {
         you
       </p>
 
-      <p class="font-2-r color-grey">{{ getCreateDate() }}</p>
+      <p class="font-2-r color-grey-500">{{ getCreateDate() }}</p>
     </section>
 
     <section class="container__content">
       <p
-        class="font-2-r color-grey"
+        class="font-2-r color-grey-500"
         v-if="
           dataStore.actionFocus !== props.details.id ||
           props.details.user_id !== dataStore.currentUser?.id
@@ -145,10 +145,10 @@ function offReplyPhase() {
           props.details.user_id === dataStore.currentUser?.id
         "
       >
-        <textarea class="font-2-r color-grey">{{
+        <textarea class="font-2-r color-grey-500">{{
           `${replyToUser ? '@' + replyToUser + ' ' : ''}${props.details.content}`
         }}</textarea>
-        <button class="font-2-m button--purple" type="button" @click="offUpdatePhase">
+        <button class="font-2-m button--purple" type="button" @click="updatePost">
           <span class="sr-only">Click to update reply you are editing</span>
           <span>UPDATE</span>
         </button>
@@ -159,7 +159,7 @@ function offReplyPhase() {
       class="container__buttons container__user-actions"
       v-if="dataStore.currentUser?.id === props.details.user_id"
     >
-      <button class="button--icon" type="button">
+      <button class="button--icon" type="button" @click="dataStore.isDialogOpen = true">
         <span class="sr-only">Click to delete your {{ props.details.type }}</span>
         <img src="@/assets/icons/icon-delete.svg" alt="" />
         <span class="color-pink font-2-m">DELETE</span>
@@ -204,7 +204,7 @@ function offReplyPhase() {
     "
     class="card__reply"
   >
-    <CurrentUserCard type="reply" @confirm-reply="offReplyPhase" />
+    <CurrentUserCard type="reply" @confirm-reply="replyPost" />
   </div>
 
   <ul

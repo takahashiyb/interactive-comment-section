@@ -21,7 +21,7 @@ watchEffect(async () => {
     <img :src="avatar" alt="" v-if="avatar !== null" />
 
     <textarea
-      class="textarea font-2-r color-grey"
+      class="textarea font-2-r color-grey-500"
       name="new-comment"
       :placeholder="`Add a ${props.type}...`"
       >{{

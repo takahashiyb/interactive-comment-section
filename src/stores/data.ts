@@ -6,6 +6,8 @@ import type { Users } from '@/types/users'
 import type { Comments } from '@/types/comments'
 
 export const useDataStore = defineStore('data', () => {
+  const isDialogOpen = ref<boolean>(false)
+
   const isUsersReady = ref<boolean>(false)
 
   const users = ref<Users[]>([])
@@ -66,6 +68,7 @@ export const useDataStore = defineStore('data', () => {
   }
 
   return {
+    isDialogOpen,
     users,
     getUsers,
     comments,

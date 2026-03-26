@@ -240,6 +240,14 @@ button {
   color: $pink-400;
 }
 
-.color-grey {
+.color-grey-500 {
   color: $grey-500;
+}
+
+.color-grey-800 {
+  color: $grey-800;
+}
+
+html:has(dialog[open]) {
+  overflow: hidden;
 }

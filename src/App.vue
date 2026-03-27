@@ -6,7 +6,7 @@ import CurrentUserCard from './components/CurrentUserCard.vue'
 
 const dataStore = useDataStore()
 
-watchEffect(() => {
+watchEffect(async () => {
   dataStore.getUsers()
   dataStore.getComments()
 })
@@ -27,7 +27,9 @@ function deletePost() {
       <button class="font-2-m bg-grey-500" @click="dataStore.isDialogOpen = false">
         NO, CANCEL
       </button>
-      <button class="font-2-m bg-pink" @click="deletePost">YES, DELETE</button>
+      <button data-function="confirm-delete" class="font-2-m bg-pink" @click="deletePost">
+        YES, DELETE
+      </button>
     </div>
   </dialog>
   <p v-if="!dataStore.isDataReady">is loading</p>

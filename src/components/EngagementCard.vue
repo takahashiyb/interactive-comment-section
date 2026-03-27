@@ -48,7 +48,7 @@ function getHours(time: number) {
 }
 
 function getMinutes(time: number) {
-  return Math.floor(time / (1000 * 60 * 60))
+  return Math.floor(time / (1000 * 60))
 }
 
 function getCreateDate() {
@@ -77,10 +77,12 @@ function getCreateDate() {
   const hoursElapsed = getHours(currentDate) - getHours(createdDate)
 
   if (hoursElapsed > 0) {
-    return hoursElapsed + ` day${hoursElapsed === 1 ? '' : 's'} ago`
+    return hoursElapsed + ` hour${hoursElapsed === 1 ? '' : 's'} ago`
   }
 
-  return getMinutes(currentDate) - getMinutes(createdDate)
+  const minutesElapsed = getMinutes(currentDate) - getMinutes(createdDate)
+
+  return minutesElapsed + ` minute${minutesElapsed === 1 ? '' : 's'} ago`
 }
 
 function updatePost() {
@@ -148,7 +150,12 @@ function replyPost() {
         <textarea class="font-2-r color-grey-500">{{
           `${replyToUser ? '@' + replyToUser + ' ' : ''}${props.details.content}`
         }}</textarea>
-        <button class="font-2-m button--purple" type="button" @click="updatePost">
+        <button
+          class="font-2-m button--purple"
+          data-function="update"
+          type="button"
+          @click="updatePost"
+        >
           <span class="sr-only">Click to update reply you are editing</span>
           <span>UPDATE</span>
         </button>
@@ -166,6 +173,7 @@ function replyPost() {
       </button>
       <button
         class="button--icon"
+        data-function="edit"
         type="button"
         @click="
           dataStore.actionFocus !== props.details.id
@@ -182,6 +190,7 @@ function replyPost() {
     <div class="container__buttons container__reply">
       <button
         class="button--icon"
+        data-function="reply"
         v-if="dataStore.currentUser?.id !== props.details.user_id"
         type="button"
         @click="

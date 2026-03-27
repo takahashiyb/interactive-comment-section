@@ -1,6 +1,5 @@
 import { computed, ref } from 'vue'
 import { supabase } from '@/lib/supabaseClient.ts'
-
 import { defineStore } from 'pinia'
 import type { Users } from '@/types/users'
 import type { Comments } from '@/types/comments'
@@ -25,10 +24,14 @@ export const useDataStore = defineStore('data', () => {
 
   const isCommentsReady = ref<boolean>(false)
 
+  const builderComment = ref()
+
   const comments = ref<Comments[]>([])
 
   async function getComments() {
-    const { data, error } = await supabase.from('comments').select('*')
+    builderComment.value = supabase.from('comments')
+
+    const { data, error } = await builderComment.value.select('*')
 
     if (error) {
       console.log(error)
@@ -71,6 +74,7 @@ export const useDataStore = defineStore('data', () => {
     isDialogOpen,
     users,
     getUsers,
+    builderComment,
     comments,
     getComments,
     currentUser,

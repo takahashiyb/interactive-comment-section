@@ -20,7 +20,12 @@ watchEffect(async () => {
 })
 
 async function insertData(type: 'reply' | 'send') {
-  if (!textarea.value) return
+  if (!textarea.value) {
+    window.alert(`You cannot send an empty ${props.type}`)
+    return
+  }
+
+  if (type === 'reply' && !dataStore.actionFocus) return
 
   const { data, error } = await supabase
     .from('comments')
@@ -38,10 +43,8 @@ async function insertData(type: 'reply' | 'send') {
     emits('confirmReply')
   }
 
-  await dataStore.getComments()
-
   textarea.value = ''
-  console.log(dataStore.comments)
+  dataStore.actionFocus = null
 }
 </script>
 <template>

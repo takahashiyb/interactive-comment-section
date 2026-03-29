@@ -3,7 +3,7 @@ import { ref, watchEffect } from 'vue'
 import { useDataStore } from '@/stores/data'
 import type { Comments } from '@/types/comments'
 import type { Users } from '@/types/users'
-import CurrentUserCard from './CurrentUserCard.vue'
+import CurrentUserCard from '@/components/CurrentUserCard.vue'
 
 const dataStore = useDataStore()
 
@@ -15,6 +15,8 @@ const props = defineProps<{
 }>()
 
 const replyToUser = ref<string | null>(null)
+
+const textContent = ref<string | null>(props.details.content)
 
 watchEffect(async () => {
   avatar.value = await dataStore.fetchWithRetry(props.user)
@@ -30,6 +32,8 @@ function getRepliedUser() {
 
   replyToUser.value = id
 }
+
+// --- date functions
 
 function getMonth(time: number) {
   return Math.floor(time / (1000 * 60 * 60 * 24 * 30))
@@ -85,12 +89,39 @@ function getCreateDate() {
   return minutesElapsed + ` minute${minutesElapsed === 1 ? '' : 's'} ago`
 }
 
-function updatePost() {
+// --- button functions
+
+async function updatePost() {
+  if (props.details.content === textContent.value) {
+    dataStore.actionFocus = null
+    return
+  }
+
+  await dataStore.builderComment
+    .update({ content: textContent.value })
+    .eq('id', dataStore.actionFocus)
+    .select()
   dataStore.actionFocus = null
+}
+
+async function decreaseScore() {
+  const number = props.details.score - 1
+  console.log(number)
+  await dataStore.builderComment.update({ score: number }).eq('id', props.details.id).select()
+}
+
+async function increaseScore() {
+  const number = props.details.score + 1
+  await dataStore.builderComment.update({ score: number }).eq('id', props.details.id).select()
 }
 
 function replyPost() {
   dataStore.actionFocus = null
+}
+
+function openDelete() {
+  dataStore.actionFocus = props.details.id
+  dataStore.isDialogOpen = true
 }
 </script>
 <template>
@@ -99,6 +130,7 @@ function replyPost() {
       <button
         :class="{ disable: dataStore.currentUser?.id !== props.details.user_id }"
         type="button"
+        @click="increaseScore"
       >
         <span class="sr-only">Give the {{ props.details.type }} an upvote</span>
         <img src="@/assets/icons/icon-plus.svg" alt="" />
@@ -109,6 +141,7 @@ function replyPost() {
       <button
         :class="{ disable: dataStore.currentUser?.id !== props.details.user_id }"
         type="button"
+        @click="decreaseScore"
       >
         <span class="sr-only">Give the {{ props.details.type }} an downvote</span>
         <img src="@/assets/icons/icon-minus.svg" alt="" />
@@ -134,22 +167,22 @@ function replyPost() {
         class="font-2-r color-grey-500"
         v-if="
           dataStore.actionFocus !== props.details.id ||
-          props.details.user_id !== dataStore.currentUser?.id
+          props.details.user_id !== dataStore.currentUser?.id ||
+          dataStore.isDialogOpen
         "
       >
         <span class="font-2-m color-purple" v-if="replyToUser">@{{ replyToUser + ' ' }}</span>
-        {{ props.details.content }}
+        {{ textContent }}
       </p>
       <div
         class="container__update"
         v-if="
           dataStore.actionFocus === props.details.id &&
-          props.details.user_id === dataStore.currentUser?.id
+          props.details.user_id === dataStore.currentUser?.id &&
+          !dataStore.isDialogOpen
         "
       >
-        <textarea class="font-2-r color-grey-500">{{
-          `${replyToUser ? '@' + replyToUser + ' ' : ''}${props.details.content}`
-        }}</textarea>
+        <textarea class="font-2-r color-grey-500" v-model="textContent"></textarea>
         <button
           class="font-2-m button--purple"
           data-function="update"
@@ -166,7 +199,7 @@ function replyPost() {
       class="container__buttons container__user-actions"
       v-if="dataStore.currentUser?.id === props.details.user_id"
     >
-      <button class="button--icon" type="button" @click="dataStore.isDialogOpen = true">
+      <button class="button--icon" type="button" @click="openDelete" data-function="delete">
         <span class="sr-only">Click to delete your {{ props.details.type }}</span>
         <img src="@/assets/icons/icon-delete.svg" alt="" />
         <span class="color-pink font-2-m">DELETE</span>
@@ -336,7 +369,8 @@ function replyPost() {
   flex-wrap: wrap;
 }
 
-.container__engagements {
+.container__engagements,
+.card__reply {
   padding-left: 16px;
 
   border-left: 4px solid v.$grey-100;
@@ -365,6 +399,12 @@ function replyPost() {
     grid-row: 1/3;
 
     flex-direction: column;
+
+    align-self: flex-start;
+
+    padding-top: v.$spacing-0200;
+    padding-bottom: v.$spacing-0200;
+    padding-inline: v.$spacing-0100;
   }
 
   .container__details {

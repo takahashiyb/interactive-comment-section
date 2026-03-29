@@ -31,7 +31,10 @@ export const useDataStore = defineStore('data', () => {
   async function getComments() {
     builderComment.value = supabase.from('comments')
 
-    const { data, error } = await builderComment.value.select('*')
+    const { data, error } = await builderComment.value
+      .select('*')
+      .order('score', { ascending: false })
+      .order('createdAt', { ascending: true })
 
     if (error) {
       console.log(error)

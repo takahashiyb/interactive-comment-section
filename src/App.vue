@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { watchEffect } from 'vue'
-import EngagementCard from './components/EngagementCard.vue'
-import { useDataStore } from './stores/data'
-import CurrentUserCard from './components/CurrentUserCard.vue'
+import EngagementCard from '@/components/EngagementCard.vue'
+import { useDataStore } from '@/stores/data'
+import CurrentUserCard from '@/components/CurrentUserCard.vue'
+import { supabase } from '@/lib/supabaseClient'
 
 const dataStore = useDataStore()
 
@@ -11,9 +12,23 @@ watchEffect(async () => {
   dataStore.getComments()
 })
 
-function deletePost() {
+async function deletePost() {
+  await dataStore.builderComment.delete().eq('id', dataStore.actionFocus).select()
+  dataStore.actionFocus = null
   dataStore.isDialogOpen = false
 }
+
+function closeDialog() {
+  dataStore.actionFocus = null
+  dataStore.isDialogOpen = false
+}
+
+supabase
+  .channel('comments-channel')
+  .on('postgres_changes', { event: '*', schema: 'public', table: 'comments' }, () => {
+    dataStore.getComments()
+  })
+  .subscribe()
 </script>
 
 <template>
@@ -24,9 +39,7 @@ function deletePost() {
         >Are you sure you want to delete this comment? This will remove the comment and can’t be
         undone.</span
       >
-      <button class="font-2-m bg-grey-500" @click="dataStore.isDialogOpen = false">
-        NO, CANCEL
-      </button>
+      <button class="font-2-m bg-grey-500" @click="closeDialog">NO, CANCEL</button>
       <button data-function="confirm-delete" class="font-2-m bg-pink" @click="deletePost">
         YES, DELETE
       </button>
@@ -48,7 +61,7 @@ function deletePost() {
 </template>
 
 <style lang="scss" scoped>
-@use '/src/assets/styles/main.scss' as v;
+@use '@/assets/styles/main.scss' as v;
 
 .container__comment {
   padding-top: v.$spacing-0500;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watchEffect } from 'vue'
+import { onBeforeMount, onMounted, watchEffect } from 'vue'
 import EngagementCard from '@/components/EngagementCard.vue'
 import { useDataStore } from '@/stores/data'
 import CurrentUserCard from '@/components/CurrentUserCard.vue'
@@ -7,7 +7,7 @@ import { supabase } from '@/lib/supabaseClient'
 
 const dataStore = useDataStore()
 
-watchEffect(async () => {
+onBeforeMount(async () => {
   dataStore.getUsers()
   dataStore.getComments()
 })
@@ -47,7 +47,11 @@ supabase
   </dialog>
   <p v-if="!dataStore.isDataReady">is loading</p>
   <ul v-else class="container__comment">
-    <li v-for="comment in dataStore.comments.filter((i) => i.type === 'comment')">
+    <li
+      v-for="comment in dataStore.comments.filter((i) => i.type === 'comment')"
+      :key="comment.id"
+      :data-id="comment.id"
+    >
       <EngagementCard
         :details="comment"
         :user="dataStore.users.find((i) => i.id === comment.user_id)"

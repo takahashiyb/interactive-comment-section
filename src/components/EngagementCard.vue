@@ -130,17 +130,19 @@ function openDelete() {
       <button
         :class="{ disable: dataStore.currentUser?.id !== props.details.user_id }"
         type="button"
+        data-function="plusScore"
         @click="increaseScore"
       >
         <span class="sr-only">Give the {{ props.details.type }} an upvote</span>
         <img src="@/assets/icons/icon-plus.svg" alt="" />
       </button>
-      <p class="font-2-m color-purple">
+      <p data-function="nowScore" class="font-2-m color-purple">
         {{ props.details.score }}
       </p>
       <button
         :class="{ disable: dataStore.currentUser?.id !== props.details.user_id }"
         type="button"
+        data-function="minusScore"
         @click="decreaseScore"
       >
         <span class="sr-only">Give the {{ props.details.type }} an downvote</span>
@@ -259,6 +261,8 @@ function openDelete() {
         .sort((a, b) => {
           return a.index - b.index
         })"
+      :key="reply.id"
+      :data-id="reply.id"
     >
       <EngagementCard
         :details="reply"

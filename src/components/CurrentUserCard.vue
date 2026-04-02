@@ -27,7 +27,7 @@ async function insertData(type: 'reply' | 'send') {
 
   if (type === 'reply' && !dataStore.actionFocus) return
 
-  const { data, error } = await supabase
+  await supabase
     .from('comments')
     .insert([
       {

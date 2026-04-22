@@ -12,7 +12,7 @@ export const useDataStore = defineStore('data', () => {
   const users = ref<Users[]>([])
 
   async function getUsers() {
-    const { data, error } = await supabase.from('users').select('*')
+    const { data, error } = await supabase.from('fm-intercomsec-users').select('*')
 
     if (error) {
       console.log(error)
@@ -29,7 +29,7 @@ export const useDataStore = defineStore('data', () => {
   const comments = ref<Comments[]>([])
 
   async function getComments() {
-    builderComment.value = supabase.from('comments')
+    builderComment.value = supabase.from('fm-intercomsec-comments')
 
     const { data, error } = await builderComment.value
       .select('*')
@@ -45,7 +45,7 @@ export const useDataStore = defineStore('data', () => {
   }
 
   const isDataReady = computed<boolean>(() => {
-    if (isUsersReady && isCommentsReady) {
+    if (isUsersReady.value && isCommentsReady) {
       return true
     } else {
       return false

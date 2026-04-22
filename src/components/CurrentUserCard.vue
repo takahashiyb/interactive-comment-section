@@ -28,7 +28,7 @@ async function insertData(type: 'reply' | 'send') {
   if (type === 'reply' && !dataStore.actionFocus) return
 
   await supabase
-    .from('comments')
+    .from('fm-intercomsec-comments')
     .insert([
       {
         content: textarea.value,
